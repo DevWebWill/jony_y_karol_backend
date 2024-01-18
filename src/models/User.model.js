@@ -8,16 +8,6 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        company: {
-            type: String
-        },
-        slug: {
-            type: String,
-            required: true,
-            lowercase: true,
-            trim: true,
-            unique: true,
-        },
         email: {
             type: String,
             required: true,
@@ -46,20 +36,6 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
             min: 8
-        },
-        country: {
-            type: String
-        },
-        type_of_trade: {
-            type: String
-        },
-        website: {
-            type: String
-        },
-        full_record: {
-            type: Boolean,
-            default: false,
-            required: true
         },
 
         refresh_token: String

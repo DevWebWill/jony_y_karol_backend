@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import createSlug from "./utils.js";
 import { transporter } from "../config/mailer.js";
 
-export const register = async (req, res) => {
+/* export const register = async (req, res) => {
     const { email, name, password, password_confirm } = req.body;
     
     //Validación para verificar que existen los parámetros necesarios
@@ -48,7 +48,7 @@ export const register = async (req, res) => {
             return res.status(500).json({message: 'Hubo un error al intentar el registro.'});
         }
     }
-}
+} */
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
@@ -122,7 +122,7 @@ export const login = async (req, res) => {
     })
 }
 
-export const logout = async (req, res) => {
+/* export const logout = async (req, res) => {
     const cookies = req.cookies;
 
     if(!cookies.refresh_token) {
@@ -133,9 +133,9 @@ export const logout = async (req, res) => {
     const user = await User.findOne({ refresh_token: refreshToken }).exec();
 
     if(!user) {
-        /** Poner los parámetros { sameSite y secure } cuando trabajo con una app frontend */
+        //Poner los parámetros { sameSite y secure } cuando trabajo con una app frontend
         //res.clearCookie('refresh_token', { httpOnly: true, sameSite: 'None', secure: true });
-        /** Se eliminan los parámetros para poder probar la api con Postman */
+        // Se eliminan los parámetros para poder probar la api con Postman
         res.clearCookie('refresh_token', { httpOnly: true });
         return res.sendStatus(204);
     }
@@ -143,12 +143,12 @@ export const logout = async (req, res) => {
     user.refresh_token = null;
     await user.save();
 
-    /** Poner los parámetros { sameSite y secure } cuando trabajo con una app frontend */
+    //Poner los parámetros { sameSite y secure } cuando trabajo con una app frontend
     //res.clearCookie('refresh_token', { httpOnly: true, sameSite: 'None', secure: true });
-    /** Se eliminan los parámetros para poder probar la api con Postman */
+    //Se eliminan los parámetros para poder probar la api con Postman 
     res.clearCookie('refresh_token', { httpOnly: true });
     return res.sendStatus(204);
-}
+} */
 
 export const refresh = async (req, res) => {
     const cookies = req.cookies;
@@ -198,7 +198,7 @@ export const refresh = async (req, res) => {
     )
 }
 
-export const complete = async (req, res) => {
+/* export const complete = async (req, res) => {
     const { user, company, type_entity, website, country, type_of_trade } = req.body;
     
     //Validación para verificar que existen los parámetros necesarios
@@ -233,7 +233,7 @@ export const complete = async (req, res) => {
         data: doc,
         message: 'Ha completado el registro exitosamente'
     });  
-}
+} */
 
 export const user = async (req, res) => {
     const user = req.user;

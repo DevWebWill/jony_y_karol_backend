@@ -1,6 +1,6 @@
 import Guest from "../models/Guest.model.js";
 
-export const updateGuest = async (req, res) => {
+/* export const createGuest = async (req, res) => {
     const obj = req.body
     const guest = obj.guest
 
@@ -17,6 +17,23 @@ export const updateGuest = async (req, res) => {
         data: docGuest,
         message: 'Invitado creado con éxito'
     })       
+} */
+
+export const updateGuest = async (req, res) => {
+    const obj = req.body;
+    const id = obj.id;
+    const attendance = obj.attendance;
+    try {
+        const result = await Guest.findOneAndUpdate({ _id: id }, { attendance: attendance }, null);    
+
+        res.json({
+            status: 200,
+            data: [result],
+            message: 'Gracias por tu respuesta'
+        })     
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 export const getGuest = async (req, res) => {
@@ -32,6 +49,26 @@ export const getGuest = async (req, res) => {
             return res.json({
                 status: 200,
                 guests: guest,
+                message: "Listado de Invitados"
+            });
+        }
+    });
+    
+}
+
+export const getGuests = async (req, res) => {
+    const { slug } = req.body;
+
+    Guest.find().then(guests => {
+        if(!guests) {
+            return res.json({
+                status: 404,
+                message: 'No existen invitados'
+            });
+        } else {
+            return res.json({
+                status: 200,
+                guests: guests,
                 message: "Listado de Invitados"
             });
         }
