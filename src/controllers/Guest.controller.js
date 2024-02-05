@@ -1,4 +1,5 @@
 import Guest from "../models/Guest.model.js";
+import { transporter } from "../config/mailer.js";
 
 /* export const createGuest = async (req, res) => {
     const obj = req.body
@@ -23,9 +24,12 @@ export const updateGuest = async (req, res) => {
     const obj = req.body;
     const id = obj.id;
     const attendance = obj.attendance;
+    console.log('Ha llegado al backend:', attendance);
     try {
         const result = await Guest.findOneAndUpdate({ _id: id }, { attendance: attendance }, null);    
-
+        
+        main(attendance, result.name).catch(console.error);
+        
         res.json({
             status: 200,
             data: [result],
@@ -74,4 +78,36 @@ export const getGuests = async (req, res) => {
         }
     });
     
+}
+
+async function main(attendance, name) {
+
+    let message = "";
+    let subject = "";
+    if(attendance) {
+        subject = name+" ha aceptado la invitación"
+        message = `<b>${name} ha aceptado la invitación.</b>`
+    } else {
+        subject = name+" ha rechazado la invitación"
+        message = `<b>${name} ha rechazado la invitación después de haberla aceptado.</b>`
+    }
+
+    // send mail with defined transport object
+    await transporter.sendMail({
+        from: '"Jony" <nuestraboda@karolyjona.es>', // sender address
+        //to: "dev.web.will@gmail.com, baz@example.com", // list of receivers
+        to: "bodadekarolyjona27@gmail.com", // list of receivers
+        subject: subject, // Subject line
+        //text: "Se ha iniciado sesión en Booxita", // plain text body
+        html: message, // html body
+    });
+  
+    //console.log("Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+  
+    //
+    // NOTE: You can go to https://forwardemail.net/my-account/emails to see your email delivery status and preview
+    //       Or you can use the "preview-email" npm package to preview emails locally in browsers and iOS Simulator
+    //       <https://github.com/forwardemail/preview-email>
+    //
 }
