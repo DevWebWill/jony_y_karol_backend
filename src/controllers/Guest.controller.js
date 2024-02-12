@@ -1,15 +1,13 @@
 import Guest from "../models/Guest.model.js";
 import { transporter } from "../config/mailer.js";
 
-/* export const createGuest = async (req, res) => {
-    const obj = req.body
-    const guest = obj.guest
-
-    console.log("***************", guest)
+export const createGuest = async (req, res) => {
+    const { name, slug } = req.body;
+    console.log("*******", name, slug)
 
     const docGuest = new Guest({
-        name: guest.name,
-        lastname: guest.lastname
+        name: name,
+        slug: slug
     })
             
     docGuest.save()
@@ -18,7 +16,22 @@ import { transporter } from "../config/mailer.js";
         data: docGuest,
         message: 'Invitado creado con éxito'
     })       
-} */
+}
+
+export const deleteGuest = async (req, res) => {
+    const { id } = req.body;
+    try {
+        const result = await Guest.deleteOne({ _id: id }); 
+        
+        res.json({
+            status: 200,
+            data: [result],
+            message: 'Invitado eliminado con éxito'
+        })     
+    } catch (error) {
+        console.error(error)
+    }     
+}
 
 export const updateGuest = async (req, res) => {
     const obj = req.body;
@@ -63,7 +76,7 @@ export const getGuest = async (req, res) => {
 export const getGuests = async (req, res) => {
     const { slug } = req.body;
 
-    Guest.find().then(guests => {
+    Guest.find().sort('slug').then(guests => {
         if(!guests) {
             return res.json({
                 status: 404,
